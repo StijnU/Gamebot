@@ -5,7 +5,7 @@ import java.util.Random;
 public class Game extends Canvas implements Runnable{
 
     private static final long serialVersionUID = -1442798787354930462L;
-    public static final int WIDTH = 640, HEIGHT = 1000;
+    public static final int WIDTH = 420, HEIGHT = 800;
 
     private Thread thread;
     private boolean running = false;
@@ -42,7 +42,7 @@ public class Game extends Canvas implements Runnable{
     public void run(){
         if (bot != null) {
             long lastTime = System.nanoTime();
-            double amountOfTicks = 60.0;
+            double amountOfTicks = 1000.0;
             double ns = 1_000_000_000 / amountOfTicks;
             double delta = 0;
 
@@ -58,6 +58,11 @@ public class Game extends Canvas implements Runnable{
                 }
                 if (running)
                     render();
+
+                if (handler.died){
+                    bot.nbRuns += 1;
+                    handler.restart();
+                }
             }
         }
         else{

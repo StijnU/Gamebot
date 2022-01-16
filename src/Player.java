@@ -16,17 +16,6 @@ public class Player extends GameObject{
 
     @Override
     public void tick() {
-        if (x <= (640 - 17 - width) && x >= 0) {
-            this.x += velX;
-
-        }
-        else{
-            if (x > (640 - 17 - width)){
-                this.x = 1;
-            }
-            else{
-                this.x = (640 - 17 - width);
-            }
-        }
+        this.x += velX;
     }
 }

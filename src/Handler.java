@@ -8,10 +8,11 @@ public class Handler {
     private int mapHeight;
     private int mapWidth;
     private int score = 0;
-    private boolean died = false;
+    public boolean died = false;
 
     int nbOfTicks = 0;
     int nbTicksSpeedUpdate = 1000;
+    int nbTicksSpawnUpdate = 500;
     int nbTickSpawn = 50;
     int baseSpeed = 10;
 
@@ -28,7 +29,6 @@ public class Handler {
         for(int i = 0; i < objects.size(); i++){
             GameObject tempObject = objects.get(i);
             tempObject.tick();
-
             if (tempObject.getY() + tempObject.getHeight() + 40> mapHeight){
                 removeObject(tempObject);
                 score += 1;
@@ -36,6 +36,14 @@ public class Handler {
 
             if (tempObject.getType() == Type.PLAYER){
                 player = tempObject;
+                // check if player is out of map
+                if (player.getX() > mapWidth - player.getWidth()){
+                    player.setX(0);
+                }
+
+                if (player.getX() < 0){
+                    player.setX(mapWidth - player.getWidth());
+                }
             }
         }
 
@@ -43,6 +51,10 @@ public class Handler {
             objects.add(new Obstacle(random.nextInt((mapWidth - 17 - 20)),
                     -150, 0, baseSpeed + (nbOfTicks / nbTicksSpeedUpdate),
                     Type.OBSTACLE, 50, 100));
+        }
+
+        if (nbOfTicks % nbTicksSpawnUpdate == 0){
+            nbTickSpawn -= 5;
         }
         nbOfTicks++;
 
@@ -114,6 +126,7 @@ public class Handler {
             died = false;
             score = 0;
             nbOfTicks = 0;
+            nbTickSpawn = 50;
         }
     }
 
